@@ -1,32 +1,59 @@
 package ch.scbe.productstore.resources.category;
 
 import org.springframework.web.bind.annotation.*;
+import ch.scbe.productstore.resources.category.dto.*;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/categories")
 public class CategoryController {
-    @GetMapping("/categories/{id}")
-    public String getCategory(@PathVariable String id) {
-        return "Kategorie mit ID: " + id;
+
+    @Autowired
+    private CategoryService categoryService;
+
+    @Autowired
+    private CategoryMapper categoryMapper;
+
+    @GetMapping
+    public List<CategoryShowDto> getAllCategories() {
+        return categoryService.getAll().stream().map(categoryMapper::toShowDto).collect(Collectors.toList());
     }
 
-    @GetMapping("/categories")
-    public String getAllCategories() {
-        return "Liste aller Kategorien";
+    @GetMapping("/{id}")
+    public CategoryShowDto getCategoryById(@PathVariable Long id) {
+        return categoryMapper.toShowDto(categoryService.getById(id));
     }
 
-    @PostMapping("/categories")
-    public String createCategory() {
-        return "Neue Kategorie erstellt";
+    @PostMapping
+    public CategoryShowDto createCategory(@RequestBody CategoryCreateDto dto) {
+        Category category = categoryMapper.toEntity(dto);
+
+        if (dto.getParentCategoryId() != null) {
+            Category parent = categoryService.getById(dto.getParentCategoryId());
+            category.setParentCategory(parent);
+        }
+
+        return categoryMapper.toShowDto(categoryService.create(category));
     }
 
-    @PutMapping("/categories/{id}")
-    public String updateCategory(@PathVariable String id) {
-        return "Kategorie mit ID " + id + " aktualisiert";
+    @PutMapping("{id}")
+    public void updateCategory(@PathVariable Long id, @RequestBody CategoryCreateDto dto) {
+        Category category = categoryService.getById(id);
+        categoryMapper.update(dto, category);
+
+        if (dto.getParentCategoryId() != null) {
+            Category parent = categoryService.getById(dto.getParentCategoryId());
+            category.setParentCategory(parent);
+        }
+
+        categoryService.update(id, category);
     }
 
-    @DeleteMapping("/categories/{id}")
-    public String deleteCategory(@PathVariable String id) {
-        return "Kategorie mit ID " + id + " gelöscht";
+    @DeleteMapping("{id}")
+    public void deleteCategory(@PathVariable Long id) {
+        categoryService.delete(id);
     }
 }
