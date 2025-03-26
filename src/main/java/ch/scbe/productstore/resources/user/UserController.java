@@ -1,22 +1,48 @@
 package ch.scbe.productstore.resources.user;
 
 import org.springframework.web.bind.annotation.*;
+import ch.scbe.productstore.resources.user.dto.UserCreateDto;
+import ch.scbe.productstore.resources.user.dto.UserShowDto;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/users")
 public class UserController {
-    @PostMapping("/login")
-    public String login() {
-        return "JWT-Token zurückgegeben";
+
+    @Autowired
+    private UsersService usersService;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @GetMapping
+    public List<UserShowDto> getAllUsers() {
+        return usersService.getAll().stream().map(userMapper::toShowDto).collect(Collectors.toList());
     }
 
-    @PostMapping("/register")
-    public String register() {
-        return "Neuer Benutzer registriert";
+    @GetMapping("/{id}")
+    public UserShowDto getUserById(@PathVariable Long id) {
+        return userMapper.toShowDto(usersService.getById(id));
     }
 
-    @PutMapping("/role/{id}")
-    public String promoteUser(@PathVariable String id) {
-        return "Benutzer mit ID " + id + " wurde zum Admin befördert";
+    @PostMapping
+    public UserShowDto createUser(@RequestBody UserCreateDto dto) {
+        Users user = userMapper.toEntity(dto);
+        return userMapper.toShowDto(usersService.create(user));
+    }
+
+    @PutMapping("/{id}")
+    public void updateUser(@PathVariable Long id, @RequestBody UserCreateDto dto) {
+        Users existingUser = usersService.getById(id);
+        userMapper.update(dto, existingUser);
+        usersService.update(id, existingUser);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable Long id) {
+        usersService.delete(id);
     }
 }
