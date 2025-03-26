@@ -1,5 +1,8 @@
 package ch.scbe.productstore.resources.product.dto;
 
+import lombok.Data;
+
+@Data
 public class ProductUpdateDto {
     private String name;
     private String description;
