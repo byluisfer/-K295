@@ -1,8 +1,5 @@
 package ch.scbe.productstore.resources.product.dto;
 
-import lombok.Data;
-
-@Data
 public class ProductShowDto {
     private Long id;
     private String name;

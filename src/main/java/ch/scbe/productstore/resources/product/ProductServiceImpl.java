@@ -1,43 +1,66 @@
 package ch.scbe.productstore.resources.product;
 
+import ch.scbe.productstore.resources.category.Category;
+import ch.scbe.productstore.resources.category.CategoryRepository;
+import ch.scbe.productstore.resources.product.dto.ProductShowDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import ch.scbe.productstore.resources.product.dto.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
-    ProductRepository productRepository;
+    private ProductRepository productRepository;
 
-    public Product create(Product product) {
-        return this.productRepository.save(product);
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private ProductMapper productMapper;
+
+    @Override
+    public ProductShowDto create(ProductCreateDto dto) {
+        Product product = productMapper.toEntity(dto);
+        Category category = categoryRepository.findById(dto.getCategoryId()).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+        product.setCategory(category);
+        return productMapper.toShowDto(productRepository.save(product));
     }
 
-    public Product getById(Long id) {
-        return this.productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product with the id " + id + " not found"));
+    @Override
+    public ProductDetailDto getById(Long id) {
+        Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+        return productMapper.toDetailDto(product);
     }
 
-    public List<Product> getAll() {
-        return (List<Product>) this.productRepository.findAll();
+    @Override
+    public List<ProductShowDto> getAll() {
+        return productRepository.findAll()
+                .stream()
+                .map(productMapper::toShowDto)
+                .collect(Collectors.toList());
     }
 
-    public Product update(Long id, Product product) {
-        Product existingProduct = this.productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product with the id " + id + " not found"));
-        existingProduct.setName(product.getName());
-        existingProduct.setDescription(product.getDescription());
-        existingProduct.setImage(product.getImage());
-        existingProduct.setPrice(product.getPrice());
-        existingProduct.setStock(product.getStock());
-        existingProduct.setSku(product.getSku());
-        existingProduct.setCategory(product.getCategory());
-        existingProduct.setActive(product.getActive());
+    @Override
+    public void update(Long id, ProductUpdateDto dto) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
-        return productRepository.save(existingProduct);
+        productMapper.update(dto, product);
+
+        Category category = categoryRepository.findById(dto.getCategoryId())
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+        product.setCategory(category);
+
+        productRepository.save(product);
     }
 
+
+    @Override
     public void delete(Long id) {
         productRepository.deleteById(id);
     }

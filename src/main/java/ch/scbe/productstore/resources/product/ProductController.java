@@ -2,31 +2,40 @@ package ch.scbe.productstore.resources.product;
 
 import org.springframework.web.bind.annotation.*;
 
+import ch.scbe.productstore.resources.product.dto.*;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/products")
 public class ProductController {
-    @GetMapping("/products/{id}")
-    public String getProduct(@PathVariable String id) {
-        return "Produkt mit ID: " + id;
+
+    @Autowired
+    private ProductService productService;
+
+    @GetMapping
+    public List<ProductShowDto> getAllProducts() {
+        return productService.getAll();
     }
 
-    @GetMapping("/products")
-    public String getAllProducts() {
-        return "Liste aller Produkte";
+    @GetMapping("/{id}")
+    public ProductDetailDto getProductById(@PathVariable Long id) {
+        return productService.getById(id);
     }
 
-    @PostMapping("/products")
-    public String createProduct() {
-        return "Neues Produkt erstellt";
+    @PostMapping
+    public ProductShowDto createProduct(@RequestBody ProductCreateDto dto) {
+        return productService.create(dto);
     }
 
-    @PutMapping("/products/{id}")
-    public String updateProduct(@PathVariable String id) {
-        return "Produkt mit ID " + id + " aktualisiert";
+    @PutMapping("/{id}")
+    public void updateProduct(@PathVariable Long id, @RequestBody ProductUpdateDto dto) {
+        productService.update(id, dto);
     }
 
-    @DeleteMapping("/products/{id}")
-    public String deleteProduct(@PathVariable String id) {
-        return "Produkt mit ID " + id + " gelöscht";
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable Long id) {
+        productService.delete(id);
     }
 }

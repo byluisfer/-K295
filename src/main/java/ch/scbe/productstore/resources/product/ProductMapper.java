@@ -5,7 +5,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "sping")
+@Mapper(componentModel = "spring")
 public abstract class ProductMapper {
 
     @Mapping(source = "name", target = "name")
@@ -14,7 +14,8 @@ public abstract class ProductMapper {
     @Mapping(source = "price", target = "price")
     @Mapping(source = "stock", target = "stock")
     @Mapping(source = "sku", target = "sku")
-    public abstract Product toEntity(ProductCreateDto productCreateDto);
+    @Mapping(source = "active", target = "active")
+    public abstract Product toEntity(ProductCreateDto dto);
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
@@ -37,5 +38,6 @@ public abstract class ProductMapper {
     @Mapping(source = "price", target = "price")
     @Mapping(source = "stock", target = "stock")
     @Mapping(source = "sku", target = "sku")
-    public abstract void update(ProductUpdateDto productUpdateDto, @MappingTarget Product productToUpdate);
+    @Mapping(source = "active", target = "active")
+    public abstract void update(ProductUpdateDto dto, @MappingTarget Product productToUpdate);
 }

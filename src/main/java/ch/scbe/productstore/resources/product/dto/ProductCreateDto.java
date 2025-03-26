@@ -1,8 +1,5 @@
 package ch.scbe.productstore.resources.product.dto;
 
-import lombok.Data;
-
-@Data
 public class ProductCreateDto {
     private String name;
     private String description;
@@ -11,6 +8,7 @@ public class ProductCreateDto {
     private int stock;
     private String sku;
     private Long categoryId;
+    private Boolean active;
 
     public String getName() {
         return name;
@@ -66,5 +64,13 @@ public class ProductCreateDto {
 
     public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }

@@ -1,11 +1,12 @@
 package ch.scbe.productstore.resources.product;
 
+import ch.scbe.productstore.resources.product.dto.*;
 import java.util.List;
 
 public interface ProductService {
-    Product create(Product product);
-    Product getById(Long id);
-    List<Product> getAll();
-    Product update(Long id, Product product);
+    ProductShowDto create(ProductCreateDto dto);
+    ProductDetailDto getById(Long id);
+    List<ProductShowDto> getAll();
+    void update(Long id, ProductUpdateDto dto);
     void delete(Long id);
 }
