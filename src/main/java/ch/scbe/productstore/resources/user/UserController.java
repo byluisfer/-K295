@@ -1,5 +1,9 @@
 package ch.scbe.productstore.resources.user;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 import ch.scbe.productstore.resources.user.dto.UserCreateDto;
@@ -19,31 +23,75 @@ public class UserController {
     @Autowired
     private UserMapper userMapper;
 
+    @Operation(
+            summary = "Get all users",
+            description = "Returns a list with all users"
+    )
+    @ApiResponse(responseCode = "200", description = "Users found!")
     @GetMapping
     public List<UserShowDto> getAllUsers() {
         return usersService.getAll().stream().map(userMapper::toShowDto).collect(Collectors.toList());
     }
 
+    @Operation(
+            summary = "Get the user by ID",
+            description = "Returns a user by its ID"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "User found!"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
     @GetMapping("/{id}")
-    public UserShowDto getUserById(@PathVariable Long id) {
+    public UserShowDto getUserById(
+            @Parameter(description = "ID of the user you want to update", example = "1")
+            @PathVariable Long id
+    ) {
         return userMapper.toShowDto(usersService.getById(id));
     }
 
+    @Operation(
+            summary = "Create new user",
+            description = "Create a new user"
+    )
+    @ApiResponse(responseCode = "201", description = "User created!")
     @PostMapping
     public UserShowDto createUser(@RequestBody UserCreateDto dto) {
         Users user = userMapper.toEntity(dto);
         return userMapper.toShowDto(usersService.create(user));
     }
 
+    @Operation(
+            summary = "Update user",
+            description = "Update an existing user"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "User updated!"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
     @PutMapping("/{id}")
-    public void updateUser(@PathVariable Long id, @RequestBody UserCreateDto dto) {
+    public void updateUser(
+            @Parameter(description = "ID of the user you want to update", example = "1")
+            @PathVariable Long id,
+            @RequestBody UserCreateDto dto
+    ) {
         Users existingUser = usersService.getById(id);
         userMapper.update(dto, existingUser);
         usersService.update(id, existingUser);
     }
 
+    @Operation(
+            summary = "Delete user",
+            description = "Delete a user by its ID"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "User delete!"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
+    public void deleteUser(
+            @Parameter(description = "ID of the user you want to delete", example = "1")
+            @PathVariable Long id
+    ) {
         usersService.delete(id);
     }
 }
