@@ -39,7 +39,8 @@ public class UserController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "User found!"),
-            @ApiResponse(responseCode = "404", description = "User not found")
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "400", description = "Invalid user ID")
     })
     @GetMapping("/{id}")
     public UserShowDto getUserById(
@@ -66,7 +67,8 @@ public class UserController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "User updated!"),
-            @ApiResponse(responseCode = "404", description = "User not found")
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "400", description = "Invalid user data")
     })
     @PutMapping("/{id}")
     public void updateUser(
@@ -85,7 +87,8 @@ public class UserController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "User delete!"),
-            @ApiResponse(responseCode = "404", description = "User not found")
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "400", description = "Invalid user ID")
     })
     @DeleteMapping("/{id}")
     public void deleteUser(
