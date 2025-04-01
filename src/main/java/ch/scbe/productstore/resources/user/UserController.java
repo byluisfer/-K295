@@ -1,13 +1,14 @@
 package ch.scbe.productstore.resources.user;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 import ch.scbe.productstore.resources.user.dto.UserCreateDto;
 import ch.scbe.productstore.resources.user.dto.UserShowDto;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Tag(name = "Users Controller", description = "Controller for manage the users")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {

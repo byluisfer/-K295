@@ -1,12 +1,13 @@
 package ch.scbe.productstore.resources.category;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 import ch.scbe.productstore.resources.category.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Tag(name = "Category Controller", description = "Controller for manage the categories")
 @RestController
 @RequestMapping("/api/categories")
 public class CategoryController {

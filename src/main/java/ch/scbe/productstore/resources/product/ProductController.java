@@ -1,12 +1,12 @@
 package ch.scbe.productstore.resources.product;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
-
 import ch.scbe.productstore.resources.product.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.List;
 
+@Tag(name = "Product Controller", description = "Controller for manage the products")
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
