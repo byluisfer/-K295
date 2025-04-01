@@ -1,5 +1,9 @@
 package ch.scbe.productstore.resources.category;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 import ch.scbe.productstore.resources.category.dto.*;
@@ -18,16 +22,37 @@ public class CategoryController {
     @Autowired
     private CategoryMapper categoryMapper;
 
+    @Operation(
+            summary = "Get all categories",
+            description = "Returns a list with all the categories"
+    )
+    @ApiResponse(responseCode = "200", description = "All categories found!")
     @GetMapping
     public List<CategoryShowDto> getAllCategories() {
         return categoryService.getAll().stream().map(categoryMapper::toShowDto).collect(Collectors.toList());
     }
 
+    @Operation(
+            summary = "Get category by its ID",
+            description = "Returns the category with the specified ID"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Category found!"),
+            @ApiResponse(responseCode = "404", description = "Category not found")
+    })
     @GetMapping("/{id}")
-    public CategoryShowDto getCategoryById(@PathVariable Long id) {
+    public CategoryShowDto getCategoryById(
+            @Parameter(description = "ID of the category to give back", example = "1")
+            @PathVariable Long id
+    ) {
         return categoryMapper.toShowDto(categoryService.getById(id));
     }
 
+    @Operation(
+            summary = "Create new category",
+            description = "Create a new category"
+    )
+    @ApiResponse(responseCode = "201", description = "Category created!")
     @PostMapping
     public CategoryShowDto createCategory(@RequestBody CategoryCreateDto dto) {
         Category category = categoryMapper.toEntity(dto);
@@ -40,8 +65,20 @@ public class CategoryController {
         return categoryMapper.toShowDto(categoryService.create(category));
     }
 
+    @Operation(
+            summary = "Update a category",
+            description = "Update an existing category by its ID"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Category updated!"),
+            @ApiResponse(responseCode = "404", description = "Category not found")
+    })
     @PutMapping("{id}")
-    public void updateCategory(@PathVariable Long id, @RequestBody CategoryCreateDto dto) {
+    public void updateCategory(
+            @Parameter(description = "ID of the category you want to update", example = "1")
+            @PathVariable Long id,
+            @RequestBody CategoryCreateDto dto
+    ) {
         Category category = categoryService.getById(id);
         categoryMapper.update(dto, category);
 
@@ -53,8 +90,19 @@ public class CategoryController {
         categoryService.update(id, category);
     }
 
+    @Operation(
+            summary = "Delete a category",
+            description = "Delete a existing category by its ID"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Category deleted!"),
+            @ApiResponse(responseCode = "404", description = "Category not found")
+    })
     @DeleteMapping("{id}")
-    public void deleteCategory(@PathVariable Long id) {
+    public void deleteCategory(
+            @Parameter(description = "ID of the category you want to delete", example = "1")
+            @PathVariable Long id
+    ) {
         categoryService.delete(id);
     }
 }
