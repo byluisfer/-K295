@@ -34,7 +34,8 @@ public class ProductController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Product found!"),
-            @ApiResponse(responseCode = "404", description = "Product not found")
+            @ApiResponse(responseCode = "404", description = "Product not found"),
+            @ApiResponse(responseCode = "400", description = "Invalid product ID")
     })
     @GetMapping("/{id}")
     public ProductDetailDto getProductById(
@@ -60,7 +61,8 @@ public class ProductController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Product updated!"),
-            @ApiResponse(responseCode = "404", description = "Product not found")
+            @ApiResponse(responseCode = "404", description = "Product not found"),
+            @ApiResponse(responseCode = "400", description = "Invalid product data")
     })
     @PutMapping("/{id}")
     public void updateProduct(
@@ -77,7 +79,8 @@ public class ProductController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Product deleted!"),
-            @ApiResponse(responseCode = "404", description = "Product not found")
+            @ApiResponse(responseCode = "404", description = "Product not found"),
+            @ApiResponse(responseCode = "400", description = "Invalid product ID")
     })
     @DeleteMapping("/{id}")
     public void deleteProduct(
