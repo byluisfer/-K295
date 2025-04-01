@@ -38,7 +38,8 @@ public class CategoryController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Category found!"),
-            @ApiResponse(responseCode = "404", description = "Category not found")
+            @ApiResponse(responseCode = "404", description = "Category not found"),
+            @ApiResponse(responseCode = "400", description = "Invalid category ID")
     })
     @GetMapping("/{id}")
     public CategoryShowDto getCategoryById(
@@ -71,7 +72,8 @@ public class CategoryController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Category updated!"),
-            @ApiResponse(responseCode = "404", description = "Category not found")
+            @ApiResponse(responseCode = "404", description = "Category not found"),
+            @ApiResponse(responseCode = "400", description = "Invalid category data")
     })
     @PutMapping("{id}")
     public void updateCategory(
@@ -96,7 +98,8 @@ public class CategoryController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Category deleted!"),
-            @ApiResponse(responseCode = "404", description = "Category not found")
+            @ApiResponse(responseCode = "404", description = "Category not found"),
+            @ApiResponse(responseCode = "400", description = "Invalid category ID")
     })
     @DeleteMapping("{id}")
     public void deleteCategory(
