@@ -6,10 +6,13 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: "123"
       MYSQL_DATABASE: product_manager
-      MYSQL_USER: root
-      MYSQL_PASSWORD: "123"
     volumes:
       - db_data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mariadb-admin", "-u", "root", "-p123", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   adminer:
     image: adminer:latest
@@ -29,7 +32,8 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: "123"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
 volumes:
   db_data:
