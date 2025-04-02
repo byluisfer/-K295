@@ -71,7 +71,7 @@ public class CategoryController {
             description = "Update an existing category by its ID"
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Category updated!"),
+            @ApiResponse(responseCode = "201", description = "Category updated!"),
             @ApiResponse(responseCode = "404", description = "Category not found"),
             @ApiResponse(responseCode = "400", description = "Invalid category data")
     })
@@ -97,7 +97,7 @@ public class CategoryController {
             description = "Delete a existing category by its ID"
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Category deleted!"),
+            @ApiResponse(responseCode = "201", description = "Category deleted!"),
             @ApiResponse(responseCode = "404", description = "Category not found"),
             @ApiResponse(responseCode = "400", description = "Invalid category ID")
     })

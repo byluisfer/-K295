@@ -60,7 +60,7 @@ public class ProductController {
             description = "Update an existing product"
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Product updated!"),
+            @ApiResponse(responseCode = "201", description = "Product updated!"),
             @ApiResponse(responseCode = "404", description = "Product not found"),
             @ApiResponse(responseCode = "400", description = "Invalid product data")
     })
@@ -78,7 +78,7 @@ public class ProductController {
             description = "Delete a product by its ID"
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Product deleted!"),
+            @ApiResponse(responseCode = "201", description = "Product deleted!"),
             @ApiResponse(responseCode = "404", description = "Product not found"),
             @ApiResponse(responseCode = "400", description = "Invalid product ID")
     })

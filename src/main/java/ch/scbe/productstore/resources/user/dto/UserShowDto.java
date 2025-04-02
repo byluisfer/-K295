@@ -11,6 +11,7 @@ public class UserShowDto {
     @Schema(description = "Username of the user", example = "Luisfer")
     private String username;
 
+    // Getters & Setters
     public Long getId() {
         return id;
     }

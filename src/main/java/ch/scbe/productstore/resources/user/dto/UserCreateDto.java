@@ -11,6 +11,7 @@ public class UserCreateDto {
     @Schema(description = "Password for the user", example = "123")
     private String password;
 
+    // Getters & Setters
     public String getUsername() {
         return username;
     }

@@ -2,7 +2,6 @@ package ch.scbe.productstore.resources.auth.security;
 
 import ch.scbe.productstore.resources.user.Users;
 import ch.scbe.productstore.resources.user.UsersService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;

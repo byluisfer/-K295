@@ -66,7 +66,7 @@ public class UserController {
             description = "Update an existing user"
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "User updated!"),
+            @ApiResponse(responseCode = "201", description = "User updated!"),
             @ApiResponse(responseCode = "404", description = "User not found"),
             @ApiResponse(responseCode = "400", description = "Invalid user data")
     })
@@ -86,7 +86,7 @@ public class UserController {
             description = "Delete a user by its ID"
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "User delete!"),
+            @ApiResponse(responseCode = "201", description = "User delete!"),
             @ApiResponse(responseCode = "404", description = "User not found"),
             @ApiResponse(responseCode = "400", description = "Invalid user ID")
     })
