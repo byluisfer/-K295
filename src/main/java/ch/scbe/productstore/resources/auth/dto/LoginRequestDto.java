@@ -14,6 +14,7 @@ public class LoginRequestDto {
     @Schema(description = "Password of the user", example = "admin123")
     private String password;
 
+    // Getters & Setters
     public String getUsername() {
         return username;
     }

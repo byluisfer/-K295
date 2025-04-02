@@ -4,14 +4,12 @@ public class TokenWrapper {
 
     private String token;
 
-    public TokenWrapper() {
-        // no-args constructor
-    }
-
+    // Constructor
     public TokenWrapper(String token) {
         this.token = token;
     }
 
+    // Getters & Setters
     public String getToken() {
         return token;
     }

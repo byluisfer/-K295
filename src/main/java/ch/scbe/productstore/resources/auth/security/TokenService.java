@@ -23,7 +23,7 @@ public class TokenService {
         return Jwts.builder()
                 .setSubject(user.getUsername())
                 .claim("roles", user.getRoles())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setIssuedAt(new Date(System.currentTimeMillis())) // Date creation the token
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10h to expire the token
                 .signWith(SECRET_KEY)
                 .compact();

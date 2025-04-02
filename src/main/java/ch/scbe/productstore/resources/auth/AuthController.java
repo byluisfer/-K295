@@ -23,7 +23,7 @@ public class AuthController {
     private TokenService tokenService;
 
     @PostMapping("/login")
-    public TokenWrapper login(@RequestBody LoginRequestDto dto) throws JsonProcessingException {
+    public TokenWrapper login(@RequestBody LoginRequestDto dto) {
         Users user = usersService.getUserWithCredentials(dto.getUsername(), dto.getPassword());
         String token = tokenService.generateToken(user);
         return new TokenWrapper(token);
