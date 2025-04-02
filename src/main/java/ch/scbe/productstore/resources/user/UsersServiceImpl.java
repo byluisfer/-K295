@@ -2,6 +2,7 @@ package ch.scbe.productstore.resources.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,8 +13,13 @@ public class UsersServiceImpl implements UsersService {
     @Autowired
     UsersRepository usersRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Override
     public Users create(Users user) {
-        return this.usersRepository.save(user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return usersRepository.save(user);
     }
 
     public Users getById(Long id) {
@@ -24,14 +30,35 @@ public class UsersServiceImpl implements UsersService {
         return (List<Users>) this.usersRepository.findAll();
     }
 
+    @Override
     public Users update(Long id, Users user) {
-        Users users = this.usersRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User with the id " + id + " not found"));
-        users.setUsername(user.getUsername());
-        users.setPassword(user.getPassword());
-        return usersRepository.save(users);
+        Users existing = usersRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        existing.setUsername(user.getUsername());
+        existing.setPassword(passwordEncoder.encode(user.getPassword()));
+        return usersRepository.save(existing);
     }
 
     public void delete(Long id) {
         usersRepository.deleteById(id);
+    }
+
+    @Override
+    public Users getUserWithCredentials(String username, String password) {
+        Users user = this.usersRepository.findByUsername(username);
+        if (user == null || !passwordEncoder.matches(password, user.getPassword())) {
+            throw new RuntimeException("Invalid credentials");
+        }
+        return user;
+    }
+
+    @Override
+    public Users findUserByUsername(String username) {
+        Users user = this.usersRepository.findByUsername(username);
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+        return user;
     }
 }

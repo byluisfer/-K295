@@ -2,6 +2,7 @@ package ch.scbe.productstore.resources.user;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Schema(description = "user description")
@@ -16,12 +17,16 @@ public class Users {
     @Column(columnDefinition = "VARCHAR(255)")
     private String password;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles;
+
     public Users() {}
 
     // Constructor
-    public Users(String username, String password) {
+    public Users(String username, String password, List<String> roles) {
         this.username = username;
         this.password = password;
+        this.roles = roles;
     }
 
     // Getters and Setters
@@ -47,5 +52,13 @@ public class Users {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
     }
 }

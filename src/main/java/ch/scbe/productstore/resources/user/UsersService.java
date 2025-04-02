@@ -8,4 +8,7 @@ public interface UsersService {
     List<Users> getAll();
     Users update(Long id, Users user);
     void delete(Long id);
+
+    Users getUserWithCredentials(String username, String password);
+    Users findUserByUsername(String username);
 }
