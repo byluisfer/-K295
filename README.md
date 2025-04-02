@@ -17,6 +17,8 @@
 2. Run this command:
 ```bash
 docker-compose up --build -d
+
+ ./mvnw spring-boot:run    
 ```
 This will:
 
