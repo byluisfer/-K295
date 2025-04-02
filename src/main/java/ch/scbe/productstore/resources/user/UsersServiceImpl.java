@@ -2,7 +2,6 @@ package ch.scbe.productstore.resources.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,12 +12,9 @@ public class UsersServiceImpl implements UsersService {
     @Autowired
     UsersRepository usersRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @Override
     public Users create(Users user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(user.getPassword());
         return usersRepository.save(user);
     }
 
@@ -36,7 +32,7 @@ public class UsersServiceImpl implements UsersService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         existing.setUsername(user.getUsername());
-        existing.setPassword(passwordEncoder.encode(user.getPassword()));
+        existing.setPassword(user.getPassword());
         return usersRepository.save(existing);
     }
 
@@ -47,7 +43,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public Users getUserWithCredentials(String username, String password) {
         Users user = this.usersRepository.findByUsername(username);
-        if (user == null || !passwordEncoder.matches(password, user.getPassword())) {
+        if (user == null || !password.matches(user.getPassword())) {
             throw new RuntimeException("Invalid credentials");
         }
         return user;

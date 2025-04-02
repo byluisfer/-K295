@@ -12,10 +12,12 @@ public class MyUserPrincipal implements UserDetails {
 
     private final Users user;
 
+    // Constructor
     public MyUserPrincipal(Users user) {
         this.user = user;
     }
 
+    // Methodes
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.emptyList();
