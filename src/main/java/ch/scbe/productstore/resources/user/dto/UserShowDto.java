@@ -2,6 +2,8 @@ package ch.scbe.productstore.resources.user.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.List;
+
 @Schema(description = "DTO used to show a user")
 public class UserShowDto {
 
@@ -10,6 +12,9 @@ public class UserShowDto {
 
     @Schema(description = "Username of the user", example = "Luisfer")
     private String username;
+
+    @Schema(description = "Roles for the user", example = "[USER]")
+    private List<String> roles;
 
     // Getters & Setters
     public Long getId() {
@@ -26,5 +31,13 @@ public class UserShowDto {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
     }
 }

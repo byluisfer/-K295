@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ch.scbe.productstore.resources.user.dto.UserCreateDto;
 import ch.scbe.productstore.resources.user.dto.UserShowDto;
@@ -96,5 +97,20 @@ public class UserController {
             @PathVariable Long id
     ) {
         usersService.delete(id);
+    }
+
+    @Operation(summary = "Promote user to ADMIN", description = "Adds the ADMIN role to a user")
+    @ApiResponse(responseCode = "200", description = "User promoted successfully")
+    @PutMapping("/{id}/promote")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void promoteToAdmin(@PathVariable Long id) {
+        Users user = usersService.getById(id);
+        List<String> roles = user.getRoles();
+
+        if (!roles.contains("ADMIN")) {
+            roles.add("ADMIN");
+            user.setRoles(roles);
+            usersService.update(id, user);
+        }
     }
 }

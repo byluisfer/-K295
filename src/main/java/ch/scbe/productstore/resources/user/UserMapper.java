@@ -10,10 +10,12 @@ public abstract class UserMapper {
 
     @Mapping(source = "username", target = "username")
     @Mapping(source = "password", target = "password")
+    @Mapping(source = "roles", target = "roles")
     public abstract Users toEntity(UserCreateDto userCreateDto);
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "username", target = "username")
+    @Mapping(source = "roles", target = "roles")
     public abstract UserShowDto toShowDto(Users users);
 
     @Mapping(source = "username", target = "username")
